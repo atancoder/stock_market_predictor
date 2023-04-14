@@ -13,9 +13,15 @@ class DataFetcher:
 
     def populate_stock_data(self, symbols: Sequence[str], date: date) -> None:
         for symbol in symbols:
-            self.stock_data[symbol] = self.stock_api.get_stock_data_for_symbol(
-                symbol, date
-            )
+            print("Finding data for symbol: {}".format(symbol))
+            try:
+                self.stock_data[symbol] = self.stock_api.get_stock_data_for_symbol(
+                    symbol, date
+                )
+            except Exception as e:
+                print("Error fetching data for symbol: {}".format(symbol))
+                print(e)
+                continue
 
 
 DATE = date(2015, 12, 31)
@@ -30,7 +36,7 @@ SYMBOLS = [
     "ADI",
     "ADM",
     "ADP",
-    "ADS",
+    # "ADS",
     "ADSK",
     "AEE",
     "AEP",

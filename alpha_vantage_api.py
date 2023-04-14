@@ -120,7 +120,9 @@ class AlphaVantageAPI(StockAPI):
 
     def get_stock_data_for_symbol(self, symbol: str, date: date) -> StockData:
         raw_data = self.data_store.get_raw_data_for_symbol(symbol)
-        if not raw_data:
+        if raw_data:
+            stock_data = self._convert_raw_data_to_stock_data(raw_data, date)
+        else:
             print(f"Fetching data for {symbol}...")
             prices = self.fetch_prices_for_symbol(symbol)
             earnings = self.fetch_earnings_for_symbol(symbol)
@@ -131,9 +133,11 @@ class AlphaVantageAPI(StockAPI):
                 "earnings": earnings,
                 "company_info": company_info,
             }
+            # convert to stock data first to ensure that the data is valid
+            stock_data = self._convert_raw_data_to_stock_data(raw_data, date)
             self.data_store.store_raw_data(raw_data)
 
-        return self._convert_raw_data_to_stock_data(raw_data, date)
+        return stock_data
 
     @sleep_and_retry  # type: ignore
     @AlphaVatangeRateLimiter  # type: ignore
