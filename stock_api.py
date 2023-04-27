@@ -8,18 +8,17 @@ class StockData:
         symbol: str,
         date: date,
         price: float,
-        PE_ratio: float,
+        pe_ratio: float,
         industry: str,
         sector: str,
         market_cap: float,
-        dividend_yield: float,
         last_year_price: float,
     ) -> None:
         self.symbol = symbol
         self.date = date
 
         self.price = price
-        self.PE_ratio = PE_ratio
+        self.pe_ratio = pe_ratio
         self.industry = industry
         self.sector = sector
         self.market_cap = market_cap

@@ -109,11 +109,10 @@ class AlphaVantageAPI(StockAPI):
             symbol=symbol,
             date=date,
             price=closing_price,
-            PE_ratio=pe_ratio,
+            pe_ratio=pe_ratio,
             industry=company_info["Industry"],
             sector=company_info["Sector"],
             market_cap=float(company_info["MarketCapitalization"]),
-            dividend_yield=float(company_info["DividendYield"]),
             last_year_price=last_year_price,
         )
         return stock_data
@@ -156,8 +155,3 @@ class AlphaVantageAPI(StockAPI):
     def fetch_company_info_for_symbol(self, symbol: str) -> Dict[str, str]:
         company_info_url = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={self.API_KEY}"
         return requests.get(company_info_url).json()  # type: ignore
-
-
-print(
-    AlphaVantageAPI().get_stock_data_for_symbol("IBM", date=date(2022, 12, 31)).__dict__
-)
