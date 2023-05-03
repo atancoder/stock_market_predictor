@@ -29,17 +29,17 @@ def main() -> None:
     data_fetcher.populate_stock_data(SYMBOLS)
     save_to_csv(data_fetcher.get_labeled_data())
 
-    # training_set, test_set, validation_set = split_data(data_fetcher.get_labeled_data())
+    training_set, test_set, validation_set = split_data(data_fetcher.get_labeled_data())
 
-    # # Train
-    # model = LinearRegressionModel(training_set)
-    # model.train()
+    # Train
+    model = LinearRegressionModel(training_set)
+    model.train()
 
-    # # Score
-    # training_score = model.score(training_set)
-    # test_score = model.score(test_set)
-    # print("Training score: {}".format(training_score))
-    # print("Test score: {}".format(test_score))
+    # Score
+    training_score = model.score(training_set)
+    test_score = model.score(test_set)
+    print("Training score: {}".format(training_score))
+    print("Test score: {}".format(test_score))
 
 
 if __name__ == "__main__":

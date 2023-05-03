@@ -2,36 +2,28 @@ from typing import Any, List, Optional
 
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
-from feature_set import Feature, LabeledData, Standardizer
+from feature_set import Feature, LabeledData
 
 
 class LinearRegressionModel:
     def __init__(self, training_data: List[LabeledData]) -> None:
         self.training_data = training_data
-        self.standardizer = Standardizer([data.feature for data in training_data])
-        self.model: Optional[LinearRegression] = None
+        self.pipeline = Pipeline(
+            [("scaler", StandardScaler()), ("lr", LinearRegression())]
+        )
 
     def train(self) -> None:
-        standardized_features = [
-            self.standardizer.standardize_feature(data.feature)
-            for data in self.training_data
-        ]
+        features = [data.feature.get_vector() for data in self.training_data]
         labels = [data.label for data in self.training_data]
-        self.model = LinearRegression().fit(standardized_features, labels)
-        import pdb
-
-        pdb.set_trace()
+        self.pipeline.fit(features, labels)
 
     def predict(self, feature: Feature) -> Any:
-        assert self.model is not None, "Must train model before predicting"
-        standardized_feature = self.standardizer.standardize_feature(feature)
-        return self.model.predict(np.array([standardized_feature]))[0]
+        return self.pipeline.predict([feature])[0]
 
     def score(self, test_data: List[LabeledData]) -> Any:
-        assert self.model is not None, "Must train model before predicting"
-        standardized_features = [
-            self.standardizer.standardize_feature(data.feature) for data in test_data
-        ]
+        features = [data.feature.get_vector() for data in test_data]
         labels = [data.label for data in test_data]
-        return self.model.score(standardized_features, labels)
+        return self.pipeline.score(features, labels)

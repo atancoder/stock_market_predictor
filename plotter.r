@@ -6,7 +6,7 @@ past_pct_change <- data$past_pct_change
 
 labels <- data$label
 
-plot(pe_ratio, labels, main = "PE Ratio vs. Label", xlab = "PE Ratio", ylab = "Label", xlim = c(-500, 500))
+plot(pe_ratio, labels, main = "PE Ratio vs. Label", xlab = "PE Ratio", ylab = "Label", xlim = c(0, 100))
 # seems like there's not much of a correlation, so it would make sense the weight for this is very low
 
 limits <- boxplot.stats(market_cap)$stats[c(1, 5)]
