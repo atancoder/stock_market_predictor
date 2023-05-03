@@ -45,32 +45,33 @@ def convert_stock_data_to_labeled_data(
     return LabeledData(feature=feature, label=label)
 
 
-class Standardizer:
-    def __init__(self, features: List[Feature]) -> None:
-        self.initial_features = features
-        self.means: List[float] = []
-        self.stds: List[float] = []
-        self.compute_means_and_stds()
+# Don't need this b/c we can use Pipeline + StandardScaler
+# class Standardizer:
+#     def __init__(self, features: List[Feature]) -> None:
+#         self.initial_features = features
+#         self.means: List[float] = []
+#         self.stds: List[float] = []
+#         self.compute_means_and_stds()
 
-    def compute_means_and_stds(self) -> None:
-        num_features = len(self.initial_features[0].get_vector())
-        self.means = [0] * num_features
-        self.stds = [0] * num_features
-        for feature in self.initial_features:
-            for i, feature_component in enumerate(feature.get_vector()):
-                self.means[i] += feature_component
-        for i in range(num_features):
-            self.means[i] /= len(self.initial_features)
-        for feature in self.initial_features:
-            for i, feature_component in enumerate(feature.get_vector()):
-                self.stds[i] += (feature_component - self.means[i]) ** 2
-        for i in range(num_features):
-            self.stds[i] = math.sqrt(self.stds[i] / len(self.initial_features))
+#     def compute_means_and_stds(self) -> None:
+#         num_features = len(self.initial_features[0].get_vector())
+#         self.means = [0] * num_features
+#         self.stds = [0] * num_features
+#         for feature in self.initial_features:
+#             for i, feature_component in enumerate(feature.get_vector()):
+#                 self.means[i] += feature_component
+#         for i in range(num_features):
+#             self.means[i] /= len(self.initial_features)
+#         for feature in self.initial_features:
+#             for i, feature_component in enumerate(feature.get_vector()):
+#                 self.stds[i] += (feature_component - self.means[i]) ** 2
+#         for i in range(num_features):
+#             self.stds[i] = math.sqrt(self.stds[i] / len(self.initial_features))
 
-    def standardize_feature(self, feature: Feature) -> List[float]:
-        standardized_feature = []
-        for i, feature_component in enumerate(feature.get_vector()):
-            standardized_feature.append(
-                (feature_component - self.means[i]) / self.stds[i]
-            )
-        return standardized_feature
+#     def standardize_feature(self, feature: Feature) -> List[float]:
+#         standardized_feature = []
+#         for i, feature_component in enumerate(feature.get_vector()):
+#             standardized_feature.append(
+#                 (feature_component - self.means[i]) / self.stds[i]
+#             )
+#         return standardized_feature
